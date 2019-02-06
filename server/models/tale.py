@@ -39,7 +39,7 @@ class Tale(AccessControlledModel):
             fields=({'_id', 'folderId', 'imageId', 'creatorId', 'created',
                      'format', 'dataSet', 'narrative', 'narrativeId', 'licenseSPDX',
                      'imageInfo', 'publishInfo', 'workspaceId',
-                     'workspaceModified', 'dataSetCitation'} | self.modifiableFields))
+                     'workspaceModified', 'dataSetCitation', 'copyOfTale'} | self.modifiableFields))
 
     def validate(self, tale):
         if 'iframe' not in tale:
@@ -65,6 +65,11 @@ class Tale(AccessControlledModel):
 
         if tale.get('dataSetCitation') is None:
             tale['dataSetCitation'] = []
+
+        if 'copyOfTale' not in tale:
+            tale['copyOfTale'] = None
+
+        tale['format'] = _currentTaleFormat
 
         if not isinstance(tale['authors'], list):
             tale['authors'] = []
@@ -120,6 +125,7 @@ class Tale(AccessControlledModel):
             'authors': authors,
             'category': category,
             'config': config or {},
+            'copyOfTale': None,
             'creatorId': creatorId,
             'dataSet': data or [],
             'description': description,
