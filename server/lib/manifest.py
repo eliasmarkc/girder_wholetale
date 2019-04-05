@@ -1,4 +1,5 @@
 import os
+import six.moves.urllib as urllib
 
 from . import IMPORT_PROVIDERS
 
@@ -358,7 +359,7 @@ class Manifest:
         if folder:
             if not folder.endswith('/'):
                 folder += '/'
-            bundle['folder'] = folder
+            bundle['folder'] = urllib.parse.quote(folder)
         if filename:
             bundle['filename'] = filename
         return bundle
