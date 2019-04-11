@@ -85,17 +85,13 @@ class Instance(AccessControlledModel):
         :returns: The instance document that was edited.
         """
 
-        instanceTask = update_container.signature(
+        update_container.signature(
             args=[str(instance['_id'])], queue='manager',
             kwargs={
                 'girder_client_token': str(token['_id']),
                 'image': digest
             }
         ).apply_async()
-        instanceTask.get(timeout=TASK_TIMEOUT)
-        # TODO: Ensure valid digest?
-        instance['containerInfo']['digest'] = digest
-        return self.updateInstance(instance)
 
     def updateInstance(self, instance):
         """
